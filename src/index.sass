@@ -1,0 +1,28 @@
+.fps
+  box-sizing: border-box
+  display: block
+  position: fixed
+  top: 0
+  left: 0
+  background: rgba(black, 0.6)
+  width: 220px
+  padding: 10px
+  border: solid 1px rgba(white, 0.2)
+  font-size: 14px
+  font-family: sans-serif
+  line-height: 18px
+  *
+    box-sizing: border-box
+  &__value
+    width: 100%
+    text-align: right
+    color: #888
+  &__history
+    position: relative
+    height: 50px
+    display: flex
+    border-top: solid 1px rgba(white, 0.6)
+    &--notch
+      flex: 1 1 auto
+      width: 1%
+      align-self: flex-end
