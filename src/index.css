@@ -1,9 +1,29 @@
-.fps__history {
-  border: solid 1px;
-  height: 200px;
-  width: 300px;
+* {
+  box-sizing: border-box;
+}
+
+.fps {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  font-family: sans-serif;
   padding: 10px;
+}
+
+p {
+  text-align: right;
+  margin: 0;
+  margin-bottom: 10px;
+  font-size: 14px
+}
+
+.fps__history {
+  height: 50px;
   display: flex;
+  border-top: solid 1px rgba(255, 255, 255, 0.6);
 }
 
 .fps__history--tick {
