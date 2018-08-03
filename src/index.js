@@ -1,21 +1,7 @@
-// const template = `<div id="fpsmeter">
-// <p>Current: {{ Math.round(fps) }}fps | Average: {{ Math.round(fpsHistory.reduce((a, b) => a + b, 0) / 100) }}</p>
-// <div class="fpsHistory">
-//   <div
-//     v-for="(val, i) in fpsHistory"
-//     :key="fps-${i}"
-//     class="fpsHistory__notch"
-//     :style="styles__fpsBar(val)"
-//   ></div>
-// </div>
-// </div>`
-
 let lastCalledTime = 1
-// let fpsValue = 1
 let delta = 1
 let fpsCounter = 0
 const fpsHistory = [... new Array(100)].map(() => 60)
-
 
 const fpsmeter = document.createElement('div')
 fpsmeter.setAttribute('id', 'fpsMeterContainer')
@@ -45,31 +31,34 @@ document.body.appendChild(fpsmeter)
 const domTicks = [... document.querySelectorAll('.fps__history--tick')]
 const domFpsValue = document.querySelector('.fps__value')
 
+function hsla ({ hue, alpha }) {
+  return `hsla(${hue}, 100%, 50%, ${alpha || 1})`
+}
 
 function update () {
   if (!lastCalledTime) {
     lastCalledTime = Date.now()
-    // fpsValue = 0
     return
   }
   delta = (Date.now() - lastCalledTime) / 1000
   lastCalledTime = Date.now()
-  if (fpsCounter === 16) {
-    // fpsValue = Math.min(1 / delta, 60)
-    const fpsValue = Math.min(1 / delta, 60)
+  const fpsValue = Math.min(1 / delta, 60)
+  fpsHistory.push(fpsValue)
+
+  if (fpsCounter === 32) {
     const fpsAverage = Math.round(fpsHistory.reduce((a, b) => a + b, 0) / 100)
-    domFpsValue.innerText = `${Math.round(fpsValue)}fps | Average: ${fpsAverage}`
-    const color = opacity => `hsla(${(Math.max(fpsValue - 10, 0) / 60) * 150}, 100%, 50%, ${opacity})`
-    console.log('frame')
-    domTicks.forEach((t, i) => {
-      t.style.height = `${fpsHistory[i] / 60 * 100}%`
-      t.style.background = color(0.4)
-      t.style.borderTop = `solid 3px ${color(1)}`
-    })
+    domFpsValue.innerText = `${Math.round(fpsValue)}fps | Average: ${fpsAverage}fps`
     fpsCounter = 0
   }
-  fpsHistory.push(Math.min(1 / delta, 60))
+
   if (fpsHistory.length > 100) fpsHistory.shift()
+  domTicks.forEach((t, i) => {
+    const hue = (Math.max(fpsHistory[i] - 10, 0) / 60) * 150
+    t.style.height = `${fpsHistory[i] / 60 * 100}%`
+    t.style.background = hsla({ hue, alpha: 0.4 })
+    t.style.borderTop = `solid 3px ${hsla({ hue, alpha: 1 })}`
+  })
+
   fpsCounter++
   window.requestAnimationFrame(update)
 }
