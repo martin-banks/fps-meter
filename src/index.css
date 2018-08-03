@@ -1,0 +1,12 @@
+.fps__history {
+  border: solid 1px;
+  height: 200px;
+  width: 300px;
+  padding: 10px;
+  display: flex;
+}
+
+.fps__history--tick {
+  flex: 1 1 auto;
+  align-self: flex-end;
+}
